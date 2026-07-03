@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColdChain Monitor - Vale do São Francisco</title>
+    <link rel="icon" href="favicon-gelo.png" type="image/png">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #121212; color: #ffffff; padding: 20px; }
+        h1 { text-align: center; color: #00d2ff; }
+        .subtitulo { text-align: center; color: #aaaaaa; margin-bottom: 40px; }
+        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .card { background-color: #1e1e1e; border: 2px solid #333; border-radius: 8px; padding: 20px; width: 280px; text-align: center; }
+        .temp { font-size: 2.5rem; font-weight: bold; margin: 15px 0; color: #00ff88; }
+        .umidade { color: #888; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <h1>ColdChain Monitor ❄️</h1>
+    <p class="subtitulo">Monitoramento de Câmaras Frigoríficas | <span id="localizacao">Carregando...</span></p>
+
+    <div class="container">
+        <div class="card" id="camara-01">
+            <h3>Câmara 01</h3>
+            <p>Carregando produto...</p>
+            <div class="temp">--°C</div>
+            <div class="umidade">Umidade: --%</div>
+            <div class="status-msg">Carregando status...</div>
+        </div>
+
+        <div class="card" id="camara-02">
+            <h3>Câmara 02</h3>
+            <p>Carregando produto...</p>
+            <div class="temp">--°C</div>
+            <div class="umidade">Umidade: --%</div>
+            <div class="status-msg">Carregando status...</div>
+        </div>
+
+        <div class="card" id="camara-03">
+            <h3>Câmara 03</h3>
+            <p>Carregando produto...</p>
+            <div class="temp">--°C</div>
+            <div class="umidade">Umidade: --%</div>
+            <div class="status-msg">Carregando status...</div>
+        </div>
+    </div>
+<script>
+        // 1. Função para ir buscar os dados
+        function atualizarPainel() {
+            // O fetch() faz uma requisição HTTP dos dados
+            fetch('sensor.php')
+                .then(resposta => resposta.json()) // Quando o pacote JSON chega, nós o abrimos
+                .then(dados => {
+                    // 2. O JavaScript lê os dados purificados e injeta nas tags do HTML
+                    document.getElementById('localizacao').innerText = dados.cidade + " - " + dados.polo_economico;
+
+                    // CÂMARA 01 - UVA
+                    const camara1 = dados.camaras[0];
+                    const card1 = document.getElementById('camara-01');
+                    card1.querySelector('p').innerText = camara1.produto;
+                    card1.querySelector('.temp').innerText = camara1.temperatura + "°C";
+                    card1.querySelector('.umidade').innerText = "Umidade: " + camara1.umidade + "%";
+
+                    // Lógica Visual e de Texto do Alerta - Câmara 01
+                    if (camara1.alerta === true) {
+                        card1.style.backgroundColor = "#3d0c0c"; 
+                        card1.style.borderColor = "#ff4444";     
+                        card1.querySelector('.temp').style.color = "#ff4444"; 
+                        // Atualiza o texto em baixo do card
+                        card1.querySelector('.status-msg').innerText = "⚠️ ALERTA: Temperatura crítica!";
+                        card1.querySelector('.status-msg').style.color = "#ff4444";
+                    } else {
+                        card1.style.backgroundColor = "#1e1e1e"; 
+                        card1.style.borderColor = "#333";        
+                        card1.querySelector('.temp').style.color = "#00ff88"; 
+                        // Atualiza o texto em baixo do card
+                        card1.querySelector('.status-msg').innerText = "✅ Operação Segura";
+                        card1.querySelector('.status-msg').style.color = "#00ff88";
+                    }
+
+                    // CÂMARA 02 - MANGA
+                    const camara2 = dados.camaras[1];
+                    const card2 = document.getElementById('camara-02');
+                    card2.querySelector('p').innerText = camara2.produto;
+                    card2.querySelector('.temp').innerText = camara2.temperatura + "°C";
+                    card2.querySelector('.umidade').innerText = "Umidade: " + camara2.umidade + "%";
+
+                    // Lógica Visual e de Texto do Alerta - Câmara 02
+                    if (camara2.alerta === true) {
+                        card2.style.backgroundColor = "#3d0c0c"; 
+                        card2.style.borderColor = "#ff4444";     
+                        card2.querySelector('.temp').style.color = "#ff4444"; 
+                        // Atualiza o textinho de baixo
+                        card2.querySelector('.status-msg').innerText = "⚠️ ALERTA: Resfriamento insuficiente!";
+                        card2.querySelector('.status-msg').style.color = "#ff4444";
+                    } else {
+                        card2.style.backgroundColor = "#1e1e1e"; 
+                        card2.style.borderColor = "#333";        
+                        card2.querySelector('.temp').style.color = "#00ff88"; 
+                        // Atualiza o textinho de baixo
+                        card2.querySelector('.status-msg').innerText = "✅ Operação Segura";
+                        card2.querySelector('.status-msg').style.color = "#00ff88";
+                    }
+                    // CÂMARA 03 - TRAGEM
+                    const camara3 = dados.camaras[2];
+                    const card3 = document.getElementById('camara-03');
+                    card3.querySelector('p').innerText = camara3.produto;
+                    card3.querySelector('.temp').innerText = camara3.temperatura + "°C";
+                    card3.querySelector('.umidade').innerText = "Umidade: " + camara3.umidade + "%";
+
+                    // Lógica Visual e de Texto do Alerta - Câmara 03
+                    if (camara3.alerta === true) {
+                        card3.style.backgroundColor = "#3d0c0c"; 
+                        card3.style.borderColor = "#ff4444";     
+                        card3.querySelector('.temp').style.color = "#ff4444"; 
+                        // Atualiza o textinho de baixo
+                        card3.querySelector('.status-msg').innerText = "⚠️ ALERTA: Calor na Doca de Triagem!";
+                        card3.querySelector('.status-msg').style.color = "#ff4444";
+                    } else {
+                        card3.style.backgroundColor = "#1e1e1e"; 
+                        card3.style.borderColor = "#333";        
+                        card3.querySelector('.temp').style.color = "#00ff88"; 
+                        // Atualiza o textinho de baixo
+                        card3.querySelector('.status-msg').innerText = "✅ Operação Segura";
+                        card3.querySelector('.status-msg').style.color = "#00ff88";
+                    }                })
+                .catch(erro => console.error("Erro ao puxar dados do sensor:", erro));
+        }
+
+        // 3. Executa a função assim que a página index.html terminar de carregar na RAM
+        atualizarPainel();
+    </script>
+</body>
+</html>
