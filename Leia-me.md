@@ -16,4 +16,4 @@ Sistema de monitoramento em tempo real para automação térmica de câmeras fri
 ## 📁 Como rodar o projeto
 1. Clone o repositório.
 2. Certifique-se de ter um servidor local ativo (como XAMPP ou Laragon) para processar o script PHP.
-3. Abra o arquivo `index.html` no navegador.
+3. Acesse o projeto pelo navegador através do endereço local, ou pelo seu domínio virtual configurado em seu servidor de hospedagem.
